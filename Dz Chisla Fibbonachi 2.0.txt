@@ -1,0 +1,40 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+void main()
+{
+	setlocale(LC_ALL, "Rus");
+
+	ofstream fout;
+
+	fout.open("Peter_output.txt");
+
+	float a = 1, b = 1, number;
+	cout << "Сколько чисел Фибоначчи вывести >> ";
+	cin >> number;
+	if (number > 0)
+	{
+		fout << "0" << endl;
+		if (number > 1)
+		{
+			fout << "1" << endl;
+
+			if (number > 2)
+			{
+				fout << "1" << endl;
+				number = number - 3;
+				while (number > 0)
+				{
+					fout << a + b << endl;
+					a = a + b;
+					b = a - b;
+					number = number - 1;
+
+				}
+			}
+		}
+	}
+	fout.close();
+}
