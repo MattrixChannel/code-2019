@@ -1,0 +1,57 @@
+#include <iostream>
+
+using namespace std;
+
+void prMas(int* m, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		cout << m[i] << " ";
+	}
+	cout << endl;
+}
+
+void main()
+{
+	setlocale(LC_ALL, "Rus");
+
+	int n = 0, answer = 1;
+
+	int* Mas = new int[n];
+
+	while (answer != 0)
+	{
+		cout << "\n¬ведите число: ";
+		cin >> answer;
+
+		switch (answer)
+		{
+		case 0:
+		{
+			delete[] Mas;
+			system("pause");
+			exit(0);
+		}
+		default:
+		{
+			int* Mas1 = new int[n + 1];
+			for (int i = 0; i < n; i++)
+			{
+				Mas1[i] = Mas[i];
+			}
+
+			Mas1[n] = answer;
+			delete[] Mas;
+			Mas = Mas1;
+			n++;
+
+			prMas(Mas, n);
+
+			break;
+		}
+		}
+	}
+
+	delete[] Mas;
+	system("pause");
+}

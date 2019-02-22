@@ -1,0 +1,67 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <Windows.h>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
+
+using namespace std;
+
+void end()
+{
+	cout << "\nERROR\n";
+	system("pause");
+	exit(0);
+}
+
+void main()
+{
+	srand(time(NULL));
+	setlocale(LC_ALL, "Rus");
+
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	ofstream fout;
+	ifstream fin;
+
+	fin.open("C:\\Users\\pupil\\Desktop\\BAN\\input.txt");
+
+	vector<string> name, surname;
+	vector<int> age;
+	
+	while (fin)
+	{
+		string a;
+		fin >> a;
+		name.push_back(a);
+		fin >> a;
+		surname.push_back(a);
+		int ch;
+		fin >> ch;
+		age.push_back(ch);
+	}
+	name.pop_back();
+	surname.pop_back();
+	age.pop_back();
+	for (int i = 0; i < name.size() - 1; i++)
+	{
+		if (age[i] < age[i + 1])
+		{
+			swap(age[i], age[i + 1]);
+			swap(name[i], name[i + 1]);
+			swap(surname[i], surname[i + 1]);
+			i = -1;
+		}
+	}
+
+	fout.open("C:\\Users\\pupil\\Desktop\\BAN\\BAN.txt");
+
+	for (int i = 0; i < age.size(); i++)
+		fout << left << setw(10) << name[i] << " " << setw(12) << surname[i] << " " << setw(10) << age[i] << endl;
+
+	fout.close();
+	fin.close();
+}

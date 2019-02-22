@@ -1,0 +1,106 @@
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+void randMas(int* m, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		m[i] = rand() % 101 - 50;
+	}
+	cout << endl;
+}
+
+void end()
+{
+	cout << "\nERROR\n";
+	system("pause");
+	exit(0);
+}
+
+void prMas(int* m, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		cout << m[i] << " ";
+	}
+	cout << endl;
+}
+
+
+int main()
+{
+	srand(time(NULL));
+	setlocale(LC_ALL, "Rus");
+
+	int n = 0, answer = 0;
+
+	cout << "Введите какого размера массив вам нужен -> ";
+	cin >> n;
+
+	if (n <= 0)
+		end();
+
+	int *Mas = new int[n];
+
+	randMas(Mas, n);
+
+	while (true)
+	{
+		cout << "Выберите действие:\n 1 - Добавит эл" << endl;
+		cout << " 2 - Зарандомить массив\n 3 - вывести массив\n 4 - удалить послдний эл массива\n 5 - очистить экран\n 0 - закончить" << endl;
+		cin >> answer;
+		switch (answer)
+		{
+		case 1:
+		{
+			int *Mas1 = new int[n + 1];
+			for (int i = 0; i < n; i++)
+				Mas1[i] = Mas[i];
+			cout << "Введите новый эл -> ";
+			cin >> Mas1[n];
+			delete[]Mas;
+			Mas = Mas1;
+			n++;
+			break;
+		}
+		case 2:
+		{
+			randMas(Mas, n);
+			break;
+		}
+		case 3:
+		{
+			prMas(Mas, n);
+			break;
+		}
+		case 4:
+		{
+			if (n > 1)
+			{
+				int *Mas1 = new int[n - 1];
+				for (int i = 0; i < n - 1; i++)
+					Mas1[i] = Mas[i];
+				delete[]Mas;
+				Mas = Mas1;
+				n--;
+			}
+			break;
+		}
+		case 5:
+		{
+			system("cls");
+			break;
+		}
+		case 0:
+		{
+			exit(0);
+		}
+		default:
+			cout << "\nERROR\n";
+		}
+	}
+	delete[] Mas;
+	system("pause");
+}

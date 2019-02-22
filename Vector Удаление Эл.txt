@@ -1,0 +1,55 @@
+#include <iostream>
+#include <ctime>
+#include <vector>
+
+using namespace std;
+
+void end()
+{
+	cout << "\nERROR\n";
+	system("pause");
+	exit(0);
+}
+
+void prV(vector<float> v)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		cout << v[i] << " ";
+	}
+	cout << endl;
+}
+
+void main()
+{
+	srand(time(NULL));
+	setlocale(LC_ALL, "Rus");
+	vector<float> v;
+	float num = 0;
+	bool rez = 1;
+
+	cout << "¬ведите 10 чисел:\n";
+	for (int i = 0; i < 10; i++)
+	{
+		cin >> num;
+		v.push_back(num);
+	}
+
+	prV(v);
+
+while (rez)
+	{
+		rez = 0;
+		for (int i = 1; i < v.size() - 1; i++)
+		{
+			if (v[i] < v[i + 1] && v[i] < v[i + 1])
+			{
+				v.erase(v.begin() + i);
+				prV(v);
+				rez++;
+				break;
+			}
+		}
+	}
+	system("pause");
+}

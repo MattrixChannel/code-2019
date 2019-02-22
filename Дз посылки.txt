@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void end()
+{
+	cout << "\nERROR\n";
+	system("pause");
+	exit(0);
+}
+
+void prV(vector<float> v)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		cout << v[i] << " ";
+	}
+	cout << endl;
+}
+
+
+int main()
+{
+	setlocale(LC_ALL, "Rus");
+
+	float answer = 0;
+	vector<float> fr;
+	vector<float> sc;
+	vector<float> th;
+	while (true)
+	{
+		cout << "\n¬ведите вес посылки -> " << endl;
+		cin >> answer;
+		if (answer == 0)
+			exit(0);
+		if (answer < 0)
+		{
+			cout << "\nERROR\n";
+			break;
+		}
+		if (answer < 1 && answer > 0)
+			fr.push_back(answer);
+
+		if (answer < 7 && answer >= 1)
+			sc.push_back(answer);
+
+		if (answer >= 7)
+			th.push_back(answer);
+
+		cout << "1: ";
+		prV(fr);
+
+		cout << "2: ";
+		prV(sc);
+
+		cout << "3: ";
+		prV(th);
+
+	}
+}

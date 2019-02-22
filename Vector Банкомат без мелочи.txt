@@ -1,0 +1,81 @@
+#include <iostream>
+#include <ctime>
+#include <vector>
+
+using namespace std;
+
+void end()
+{
+	cout << "\nERROR\n";
+	system("pause");
+	exit(0);
+}
+
+void prV(vector<int> v)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		cout << v[i] << " ";
+	}
+	cout << endl;
+}
+
+void main()
+{
+	srand(time(NULL));
+	setlocale(LC_ALL, "Rus");
+	vector<int> v;
+	int req = 0;
+
+	while (true)
+	{
+		cout << "\n¬ведите сумму -> ";
+		cin >> req;
+		if (req >= 0)
+		{
+			while (req > 499)
+			{
+				v.push_back(500);
+				req -= 500;
+			}
+			while (req > 199)
+			{
+				v.push_back(200);
+				req -= 200;
+			}
+			while (req > 99)
+			{
+				v.push_back(100);
+				req -= 100;
+			}
+			while (req > 49)
+			{
+				v.push_back(50);
+				req -= 50;
+			}
+			while (req > 19)
+			{
+				v.push_back(20);
+				req -= 20;
+			}
+			while (req > 9)
+			{
+				v.push_back(10);
+				req -= 10;
+			}
+			if (req > 0)
+			{
+				cout << "¬аши деньги: -1\n";
+			}
+			else
+			{
+				cout << "¬аши деньги:\n";
+				prV(v);
+			}
+			v.clear();
+		}
+		else
+			exit(0);
+	}
+	system("pause");
+}

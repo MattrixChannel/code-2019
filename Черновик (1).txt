@@ -1,0 +1,104 @@
+#include <iostream>
+#include <ctime>
+#include <vector>
+
+using namespace std;
+
+void end()
+{
+	cout << "\nERROR\n";
+	system("pause");
+	exit(0);
+}
+
+void prV(vector<int> v)
+{
+	cout << endl;
+	for (int i = 0; i < v.size(); i++)
+	{
+		cout << v[i] << " ";
+	}
+	cout << endl;
+}
+
+
+int main()
+{
+	srand(time(NULL));
+	setlocale(LC_ALL, "Rus");
+
+	int answer = 0, poz = 0, result = 0;
+	vector<int> v;
+	while (true)
+	{
+		cout << "Выберите действие:\n 1 - Добавить в конец" << endl;
+		cout << " 2 - Добавить по номеру\n 3 - удалить ввсе эл\n 4 - удалить по номеру\n 5 - удалить последный" << endl;
+		cout << " 6 - отсортировать\n 7 - найти макс эл\n 8 - вывести на экран содержимое\n 9 - очистить экран\n 0 - закрыть" << endl;
+		cin >> answer;
+		switch (answer)
+		{
+		case 1:
+		{
+			cout << "Введите эл который хотите добавть -> ";
+			cin >> result;
+			v.push_back(result);
+			break;
+		}
+		case 2:
+		{
+			cout << "Введите позицию -> ";
+			cin >> poz;
+			if (poz < 0 || poz > v.size() - 1)
+			{
+				system("pause");
+				exit(0);
+			}
+			cout << "Введите эл -> ";
+			cin >> result;
+			v.insert(v.begin() + poz, result);
+			break;
+		}
+		case 3:
+		{
+			v.clear();
+			break;
+		}
+		case 4:
+		{
+			cout << "Введите какую поз нужно удалить -> ";
+			cin >> poz;
+			if (poz )
+			v.erase(v.begin() + poz - 1);
+			break;
+		}
+		
+		case 6:
+		{
+			cout << "Введите какую позицию вы хотите удалить из массива -> ";
+			cin >> poz;
+			break;
+		}
+		case 7:
+		{
+
+
+			break;
+		}
+		case 8:
+		{
+			prV(v);
+			break;
+		}
+		case 9:
+		{
+			break;
+		}
+		case 0:
+		{
+			exit(0);
+		}
+		default:
+			cout << "\nERROR\n";
+		}
+	}
+}

@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <Windows.h>
+#include <iomanip>
+
+using namespace std;
+
+void main()
+{
+	setlocale(LC_ALL, "Rus");
+
+	ofstream fout;
+	ifstream fin;
+
+	fin.open("D:\\input.txt");
+
+	vector<float> fir, sec, thr;
+
+	while (fin)
+	{
+		float a;
+		fin >> a;
+		fir.push_back(a);
+		fin >> a;
+		sec.push_back(a);
+		fin >> a;
+		thr.push_back(a);
+	}
+
+	fir.pop_back();
+	sec.pop_back();
+	thr.pop_back();
+
+	fin.close();
+
+	fout.open("D:\\output.txt");
+
+	for (int i = 0; i < thr.size(); i++)
+	{
+		fout << left << setw(3) << fir[i] << " " << setw(4) << sec[i] << " " << setw(5) << thr[i];
+		if (fir[i] + sec[i] > thr[i] && sec[i] + thr[i] > fir[i] && fir[i] + thr[i] > sec[i])
+		{
+			float p = (fir[i] + sec[i] + thr[i]) / 2;
+			float squ;
+			squ = sqrt(p * (p - fir[i]) * (p - sec[i]) * (p - thr[i]));
+			fout << squ << endl;
+		}
+		else
+			fout << "NO" << endl;
+	}
+
+	fout.close();
+}
