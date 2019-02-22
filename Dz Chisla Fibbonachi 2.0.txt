@@ -12,7 +12,7 @@ void main()
 	fout.open("Peter_output.txt");
 
 	float a = 1, b = 1, number;
-	cout << "Сколько чисел Фибоначчи вывести >> ";
+	cout << "How many Fibbonachi's numbers do you need? >> ";
 	cin >> number;
 	if (number > 0)
 	{
