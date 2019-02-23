@@ -1,0 +1,233 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <Windows.h>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
+
+using namespace std;
+
+void end()
+{
+	cout << "\nERROR\n";
+	system("pause");
+	exit(0);
+}
+
+//enum cat {sport , heavy , light };
+
+struct car
+{
+	int id;
+	string mark;
+	int year;
+	string category; //"sport", "heavy", "light"
+	float price;
+	bool old;
+};
+
+void main()
+{
+	srand(time(NULL));
+	setlocale(LC_ALL, "Rus");
+
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	ifstream fin;
+	ofstream fout;
+
+	fin.open("input.txt"); // Open car base
+
+	vector<car> ts;
+
+	if (fin.is_open())
+	{
+		while (!fin.eof())
+		{
+			car buf;
+			fin >> buf.id;
+			fin >> buf.mark;
+			fin >> buf.category;
+			fin >> buf.price;
+			fin >> buf.year;
+			fin >> buf.old;
+			ts.push_back(buf);
+		}
+		fin.close();
+	}
+	else
+		cout << "Can't open base";
+
+	int answer = -1;
+	while (answer != 0)
+	{
+		cout << " 1 Car list \n 2 Add car \n 3 Delete car \n 4 Show car categories n \n 5 Save as a file" << endl;
+		cout << " 6 Sort years \n 7 Show car, cost more then 'n' \n 0 exit\n" << endl;
+		cout << "Answer >> ";
+
+		cin >> answer;
+
+		system("cls");
+
+		switch (answer)
+		{
+
+		case 1:
+		{
+			for (int i = 0; i < ts.size(); i++)
+			{
+				cout << endl << " ";
+				cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(6) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+				if (ts[i].old)
+					cout << "Yes" << endl;
+				else
+					cout << "No" << endl;
+			}
+			cout << endl;
+			break;
+		}
+
+		case 2:
+		{
+			car buf;
+			cout << "Id >> ";
+			cin >> buf.id;
+			cout << "Mark >> ";
+			cin >> buf.mark;
+			cout << "Category >> ";
+			cin >> buf.category;
+			if (buf.category != "light" && buf.category != "heavy" && buf.category != "sport")
+				buf.category = "ERROR";
+			cout << "Price >> ";
+			cin >> buf.price;
+
+			cout << "Year >> ";
+			cin >> buf.year;
+			cout << "Had been used?(0/1) >> ";
+			cin >> buf.old;
+			ts.push_back(buf);
+			break;
+		}
+
+		case 3:
+		{
+			char del;
+			cout << "Delete id or mark? (i/m) >> ";
+			cin >> del;
+
+			for (int i = 0; i < ts.size(); i++)
+			{
+				cout << endl << " ";
+				cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(6) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+				if (ts[i].old)
+					cout << "Yes" << endl;
+				else
+					cout << "No" << endl;
+			}
+			cout << endl;
+
+			if (del == 'i')
+			{
+				int id;
+				cout << "Enter id >> ";
+				cin >> id;
+				for (int i = 0; i < ts.size(); i++)
+				{
+					if (ts[i].id == id)
+						ts.erase(ts.begin() + i);
+				}
+			}
+
+			if (del == 'm')
+			{
+				string mark;
+				cout << "Enter mark >> ";
+				cin >> mark;
+				for (int i = 0; i < ts.size(); i++)
+				{
+					if (ts[i].mark == mark)
+						ts.erase(ts.begin() + i);
+				}
+			}
+			cout << endl;
+			break;
+		}
+		case 4:
+		{
+			string category;
+			cout << "Enter category (sport, light, heavy) >> ";
+			cin >> category;
+			if (category != "light" && category != "heavy" && category != "sport")
+			{
+				cout << endl << "ERROR" << endl;
+				break;
+			}
+			for (int i = 0; i < ts.size(); i++)
+			{
+				if (ts[i].category == category)
+				{
+					cout << endl << " ";
+					cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(6) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+					if (ts[i].old)
+						cout << "Yes";
+					else
+						cout << "No";
+					cout << endl;
+				}
+			}
+			cout << endl;
+			break;
+		}
+		case 5:
+		{
+			string way;
+			cout << "Enter file position with txt (C://Program Files//cars.txt) >> ";
+			cin >> way;
+			fout.open(way);
+			for (int i = 0; i < ts.size(); i++)
+			{
+				fout << ts[i].id << " " << ts[i].mark << " " << ts[i].category << " " << ts[i].price << " " << ts[i].year << " " << ts[i].old;
+				fout << endl;
+			}
+			break;
+		}
+		case 6:
+		{
+			for (int i = 0; i < ts.size() - 1; i++)
+			{
+				if (ts[i].year > ts[i + 1].year)
+				{
+					swap(ts[i], ts[i + 1]);
+					i = -1;
+				}
+			}
+			break;
+		}
+		case 7:
+		{
+			float price;
+			cout << "Enter price >> ";
+			cin >> price;
+
+			for (int i = 0; i < ts.size(); i++)
+			{
+				if (ts[i].price >= price)
+				{
+					cout << endl << " ";
+					cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(6) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+					if (ts[i].old)
+						cout << "Yes";
+					else
+						cout << "No";
+					cout << endl;
+				}
+			}
+			cout << endl;
+			break;
+		}
+		}
+	}
+}
