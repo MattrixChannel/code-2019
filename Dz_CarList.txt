@@ -39,23 +39,47 @@ void main()
 	ifstream fin;
 	ofstream fout;
 
-	cout << "Need data bases's name. Example: C:\\Program Files\\database.txt (1 for input.txt) >> "; // Enter database's way
-	string database;
-	cin >> database;
-	if (database == "1")
-		database = "input.txt";
+	bool fail = 1;
 
-	fin.open(database); // Open database
+	while (fail)
+	{
+		system("cls");
+		fail = 0;
+		cout << "Need data bases's name. Example: C:\\\\Program Files\\\\database.txt (1 for Dz_CarList_input.txt; 0 for exit)\n Name >> "; // Enter database's way
+		string database;
+		cin >> database;
+		if (database == "1")
+			database = "Dz_CarList_input1.txt";
+		if (database == "0")
+			exit(0);
+
+		fin.open(database); // A try to connect to database
+
+
+		cout << "\nConnecting to " << database << endl << endl;
+
+		Sleep(500);
+		if (!fin.is_open()) // Fail
+		{
+			cout << " Failure connection";
+			Sleep(500);
+			cout << "\n Please Retry\n Retry in" << endl;
+			Sleep(1000);
+			cout << " 3";
+			Sleep(1000);
+			cout << " 2";
+			Sleep(1000);
+			cout << " 1";
+			Sleep(1000);
+			fail = 1;
+		}
+	}
 
 	vector<car> ts;
 
-	cout << "\nConnecting to " << database << endl << endl;
-
-	Sleep(500);
-
-	if (fin.is_open()) // Connecting to database
+	if (fin.is_open()) // Successful connecting to database
 	{
-		cout << " Successful connection" << endl << endl; // Success
+		cout << " Successful connection" << endl << endl;
 		int counterids = 1;
 		while (!fin.eof())
 		{
@@ -78,7 +102,7 @@ void main()
 			fin >> buf.price;
 			if (buf.price < 0)
 			{
-				buf.price = 10000;
+				eror = 1;
 			}
 
 			fin >> buf.year;
@@ -95,25 +119,25 @@ void main()
 		Sleep(500);
 		system("cls");
 	}
-	else // Fail
-	{
-		cout << " Failure connection\n\n";
-		system("pause");
-		exit(0);
-	}
+
 
 	int answer = -1;
 
 	while (answer != 0) // Main cycle
 	{
 		cout << "  --Menu--\n"; // Menu
-		cout << " 1 Car list \n 2 Add car \n 3 Remove car \n 4 Show car categories n \n 5 Save as a file" << endl;
-		cout << " 6 Sort years \n 7 Show car, cost more then 'n' \n 0 exit\n" << endl;
+		cout << " 1 Car list \n 2 Add car \n 3 Remove car \n 4 Show specific car category \n 5 Save as a file" << endl;
+		cout << " 6 Sort by years \n 7 Show car with specific price \n 8 Save Specific Car's info \n 0 exit\n" << endl;
 		cout << "Answer >> ";
 
 		cin >> answer;
 
 		system("cls"); // Remove menu after answer
+
+		bool empty = 0;
+
+		if (ts.size() < 1)
+			empty = 1;
 
 		switch (answer)
 		{
@@ -121,7 +145,7 @@ void main()
 		case 1: // Car list
 		{
 			cout << "  --Car List--";
-			if (ts.size() > 0)
+			if (!empty)
 				for (int i = 0; i < ts.size(); i++)
 				{
 					cout << endl << " ";
@@ -162,13 +186,13 @@ void main()
 
 			cout << "Price >> "; // Add price
 			cin >> buf.price;
-			if (buf.price < 1)
+			if (buf.price < 0)
 			{
 				cout << " Invalid price\n\n";
 				break;
 			}
 
-			cout << "Year >> "; // Ass year
+			cout << "Year >> "; // Add year
 			cin >> buf.year;
 			if (buf.year < 1768) // 1768 year - first car
 			{
@@ -190,338 +214,452 @@ void main()
 
 		case 3: // Remove Car
 		{
-			char del; // Chosing Remove Mode
-			cout << "Remove id / mark / category / price ( > < = ) / year ( > < = ) / used ? (i/m/c/p/y/u) >> ";
-			cin >> del;
-
-			if (del != 'i' && del != 'm' && del != 'c' && del != 'p' && del != 'y' && del != 'u') // Check Remove Mode
+			if (!empty)
 			{
-				cout << " Unknown Remove Mode\n\n";
-				break;
-			}
+				char del; // Choose Remove Mode
+				cout << "Remove id / mark / category / price ( > < = ) / year ( > < = ) / used ? (i/m/c/p/y/u) >> ";
+				cin >> del;
 
-			for (int i = 0; i < ts.size(); i++) // Show car list
-			{
-				cout << endl << " ";
-				cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
-				if (ts[i].old)
-					cout << "Yes" << endl;
-				else
-					cout << "No" << endl;
-			}
-			cout << endl;
-
-			int delcounter = 0; // Initialization deleted cars' counter
-
-			if (del == 'i') // Remove Id Mode
-			{
-				int id;
-				cout << "Enter id >> "; // Enter Id
-				cin >> id;
-				if (id < 1) // Check Id
+				if (del != 'i' && del != 'm' && del != 'c' && del != 'p' && del != 'y' && del != 'u') // Check Remove Mode
 				{
-					cout << " Invalid Id\n\n";
+					cout << " Unknown Remove Mode\n\n";
 					break;
 				}
-				for (int i = 0; i < ts.size(); i++)
+
+				for (int i = 0; i < ts.size(); i++) // Show car list
 				{
-					if (ts[i].id == id)
+					cout << endl << " ";
+					cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+					if (ts[i].old)
+						cout << "Yes" << endl;
+					else
+						cout << "No" << endl;
+				}
+				cout << endl;
+
+				int delcounter = 0; // Initialization deleted cars' counter
+
+				if (del == 'i') // Remove Id Mode
+				{
+					int id;
+					cout << "Enter id >> "; // Enter Id
+					cin >> id;
+					if (id < 1) // Check Id
 					{
-						ts.erase(ts.begin() + i);
-						delcounter++;
-						i = -1;
+						cout << " Invalid Id\n\n";
+						break;
+					}
+					for (int i = 0; i < ts.size(); i++)
+					{
+						if (ts[i].id == id)
+						{
+							ts.erase(ts.begin() + i);
+							delcounter++;
+							i = -1;
+						}
 					}
 				}
-			}
 
-			if (del == 'm') // Remove Mark Mode
-			{
-				string mark;
-				cout << "Enter mark >> "; // Enter mark
-				cin >> mark;
-				for (int i = 0; i < ts.size(); i++)
+				if (del == 'm') // Remove Mark Mode
 				{
-					if (ts[i].mark == mark)
+					string mark;
+					cout << "Enter mark >> "; // Enter mark
+					cin >> mark;
+					for (int i = 0; i < ts.size(); i++)
 					{
-						ts.erase(ts.begin() + i);
-						delcounter++;
-						i = -1;
+						if (ts[i].mark == mark)
+						{
+							ts.erase(ts.begin() + i);
+							delcounter++;
+							i = -1;
+						}
 					}
 				}
-			}
 
-			if (del == 'c') // Remove Category Mode
+				if (del == 'c') // Remove Category Mode
+				{
+					string category;
+					char mode;
+					cout << "Enter mode: Remove specific category / Remove all categories without specific (s/a) >> "; // Choose Remove Category Mode
+					cin >> mode;
+
+					if (mode != 's' && mode != 'a') // Check Remove Category Mode
+					{
+						cout << " Unknown Remove Category Mode\n\n";
+						break;
+					}
+
+					cout << "Enter category >> ";
+					cin >> category;
+
+					if (category != "light" && category != "heavy" && category != "sport") // Check category
+					{
+						cout << " Invalid category\n\n";
+						break;
+					}
+
+					if (mode == 's') // S Remove Category Mode
+						for (int i = 0; i < ts.size(); i++)
+						{
+							if (ts[i].category == category)
+							{
+								ts.erase(ts.begin() + i);
+								delcounter++;
+								i = -1;
+							}
+						}
+					if (mode == 'a') // A Remove Category Mode
+						for (int i = 0; i < ts.size(); i++)
+						{
+							if (ts[i].category != category)
+							{
+								ts.erase(ts.begin() + i);
+								delcounter++;
+								i = -1;
+							}
+						}
+				}
+
+				if (del == 'p') // Remove  Price Mode
+				{
+					float price;
+					char mode;
+
+					cout << "Enter Remove Price mode: cheeper/expensive/same (c/e/s) >> "; //  Choose Remove Price Mode
+					cin >> mode;
+
+					if (mode != 'c' && mode != 'e' && mode != 's') // Check Remove Price Mode
+					{
+						cout << " Unknown Remove Price Mode\n\n";
+						break;
+					}
+
+					cout << "Enter price >> "; // Enter price
+					cin >> price;
+					if (price < 1) // Check price
+					{
+						cout << " Invalid price\n\n";
+						break;
+					}
+
+					if (mode == 'c') // C Remove Price Mode
+						for (int i = 0; i < ts.size(); i++)
+						{
+							if (ts[i].price < price)
+							{
+								ts.erase(ts.begin() + i);
+								delcounter++;
+								i = -1;
+							}
+						}
+
+					if (mode == 'e') // E Remove Price Mode
+						for (int i = 0; i < ts.size(); i++)
+						{
+							if (ts[i].price > price)
+							{
+								ts.erase(ts.begin() + i);
+								delcounter++;
+								i = -1;
+							}
+						}
+
+					if (mode == 's') // S Remove Price Mode
+						for (int i = 0; i < ts.size(); i++)
+						{
+							if (ts[i].price == price)
+							{
+								ts.erase(ts.begin() + i);
+								delcounter++;
+								i = -1;
+							}
+						}
+				}
+
+				if (del == 'y') // Remove Year Mode
+				{
+					int year;
+					char mode;
+					cout << "Enter Remove Year mode: older / newer / specific year (o/n/s)  >> "; // Choose Remove Year Mode
+					cin >> mode;
+
+					if (mode != 'o' && mode != 'n' && mode != 's') // Check Remove Year Mode
+					{
+						cout << " Unknown Remove Year Mode\n\n";
+						break;
+					}
+
+					cin >> year; // Enter Year
+					if (year < 1768)
+					{
+						cout << " Invalid year\n\n";
+						break;
+					}
+
+					if (mode == 'o') // O Remove Year Mode
+						for (int i = 0; i < ts.size(); i++)
+						{
+							if (ts[i].year > year)
+							{
+								ts.erase(ts.begin() + i);
+								delcounter++;
+								i = -1;
+							}
+						}
+
+					if (mode == 'n') // N Remove Year Mode
+						for (int i = 0; i < ts.size(); i++)
+						{
+							if (ts[i].year < year)
+							{
+								ts.erase(ts.begin() + i);
+								delcounter++;
+								i = -1;
+							}
+						}
+
+					if (mode == 's') // S Remove Year Mode
+						for (int i = 0; i < ts.size(); i++)
+						{
+							if (ts[i].year == year)
+							{
+								ts.erase(ts.begin() + i);
+								delcounter++;
+								i = -1;
+							}
+						}
+				}
+
+				if (del == 'u') // Remove Used Mode
+				{
+					int us;
+					char mode;
+
+					cout << "Enter Remove Used Mode: Remove used cars / remove not used cars (u/n) >> "; // Choose Remove Used Mode
+					cin >> mode;
+					if (mode != 'u' && mode != 'n') // Check Remove Used Mode
+					{
+						cout << " Unknown Remove Used Mode\n\n";
+						break;
+					}
+
+					if (mode == 'u') // U Remove Used Mode
+						for (int i = 0; i < ts.size(); i++)
+						{
+							if (ts[i].old)
+							{
+								ts.erase(ts.begin() + i);
+								delcounter++;
+								i = -1;
+							}
+						}
+					if (mode == 'n') // N Remove Used Mode
+						for (int i = 0; i < ts.size(); i++)
+						{
+							if (!ts[i].old)
+							{
+								ts.erase(ts.begin() + i);
+								delcounter++;
+								i = -1;
+							}
+						}
+				}
+
+				cout << " ";
+				if (delcounter > 0)
+					cout << delcounter << " cars removed\n";
+				else
+					cout << " No removed cars\n";
+
+				delcounter = 0;
+			}
+			else
+				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
+			cout << endl;
+			break;
+		}
+
+		case 4: // Show Specific Category
+		{
+			if (!empty)
 			{
 				string category;
-				char mode;
-				cout << "Enter mode: Remove specific category / Remove all categories without specific (s/a) >> "; // Choose Remove Category Mode
-				cin >> mode;
-
-				if (mode != 's' && mode != 'a') // Check Remove Category Mode
-				{
-					cout << " Unknown Remove Category Mode\n\n";
-					break;
-				}
-
-				cout << "Enter category >> ";
+				cout << "Enter category (sport, light, heavy) >> ";
 				cin >> category;
-
-				if (category != "light" && category != "heavy" && category != "sport") // Check category
+				if (category != "light" && category != "heavy" && category != "sport")
 				{
-					cout << " Invalid category\n\n";
+					cout << endl << " Unknown category\n\n";
 					break;
 				}
-
-				if (mode == 's') // S Remove Category Mode
-					for (int i = 0; i < ts.size(); i++)
+				for (int i = 0; i < ts.size(); i++)
+				{
+					if (ts[i].category == category)
 					{
-						if (ts[i].category == category)
+						cout << endl << " ";
+						cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+						if (ts[i].old)
+							cout << "Yes";
+						else
+							cout << "No";
+						cout << endl;
+					}
+				}
+			}
+			else
+				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
+			cout << endl;
+			break;
+		}
+
+		case 5: // Save specific as a file
+		{
+			if (!empty)
+			{
+				string way;
+				cout << "Enter file position with txt. Example, cars.txt - file: C:\\\\Program Files\\\\cars.txt) >> ";
+				cin >> way;
+				fout.open(way);
+				for (int i = 0; i < ts.size(); i++)
+				{
+					fout << ts[i].id << " " << ts[i].mark << " " << ts[i].category << " " << ts[i].price << " " << ts[i].year << " " << ts[i].old;
+					fout << endl;
+				}
+				fout.close();
+			}
+			else
+				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
+			cout << endl;
+			break;
+		}
+
+		case 6: // Sort by years
+		{
+			if (!empty)
+			{
+				cout << "Sort Mode Up (1 2 3) or Down (3 2 1) (u/d) >> ";
+				char mode;
+				cin >> mode;
+				if (mode != 'u' && mode != 'd')
+				{
+					cout << " Unknown Sort Mode\n\n";
+				}
+
+				if (mode == 'u')
+					for (int i = 0; i < ts.size() - 1; i++)
+					{
+						if (ts[i].year > ts[i + 1].year)
 						{
-							ts.erase(ts.begin() + i);
-							delcounter++;
+							swap(ts[i], ts[i + 1]);
 							i = -1;
 						}
 					}
-				if (mode == 'a') // A Remove Category Mode
-					for (int i = 0; i < ts.size(); i++)
+				if (mode == 'd')
+					for (int i = 0; i < ts.size() - 1; i++)
 					{
-						if (ts[i].category != category)
+						if (ts[i].year < ts[i + 1].year)
 						{
-							ts.erase(ts.begin() + i);
-							delcounter++;
+							swap(ts[i], ts[i + 1]);
 							i = -1;
 						}
 					}
 			}
+			else
+				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
+			cout << endl;
+			break;
+		}
 
-			if (del == 'p') // Remove  Price Mode
+		case 7: // Show More Less Same Price
+		{
+			if (!empty)
 			{
 				float price;
 				char mode;
 
-				cout << "Enter Remove Price mode: cheeper/expensive/same (c/e/s) >> "; //  Choose Remove Price Mode
+				cout << "Enter Show Price Mode: More Less Same (m/l/s) >> "; // Choose Show Price Mode
 				cin >> mode;
-
-				if (mode != 'c' && mode != 'e' && mode != 's') // Check Remove Price Mode
+				if (mode != 'm' && mode != 'l' && mode != 's') // Chack Mode
 				{
-					cout << " Unknown Remove Price Mode\n\n";
+					cout << " Unknown Show Price Mode\n\n";
 					break;
 				}
 
-				cout << "Enter price >> "; // Enter price
+				cout << "Enter price >> "; // Enter Price
 				cin >> price;
-				if (price < 1) // Check price
+				if (price < 0) // Check price
 				{
 					cout << " Invalid price\n\n";
 					break;
 				}
 
-				if (mode == 'c') // C Remove Price Mode
-					for (int i = 0; i < ts.size(); i++)
-					{
-						if (ts[i].price < price)
-						{
-							ts.erase(ts.begin() + i);
-							delcounter++;
-							i = -1;
-						}
-					}
-
-				if (mode == 'e') // E Remove Price Mode
+				if (mode == 'm')
 					for (int i = 0; i < ts.size(); i++)
 					{
 						if (ts[i].price > price)
 						{
-							ts.erase(ts.begin() + i);
-							delcounter++;
-							i = -1;
+							cout << endl << " ";
+							cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+							if (ts[i].old)
+								cout << "Yes";
+							else
+								cout << "No";
+							cout << endl;
 						}
 					}
 
-				if (mode == 's') // S Remove Price Mode
+				if (mode == 'l')
+					for (int i = 0; i < ts.size(); i++)
+					{
+						if (ts[i].price < price)
+						{
+							cout << endl << " ";
+							cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+							if (ts[i].old)
+								cout << "Yes";
+							else
+								cout << "No";
+							cout << endl;
+						}
+					}
+
+				if (mode == 's')
 					for (int i = 0; i < ts.size(); i++)
 					{
 						if (ts[i].price == price)
 						{
-							ts.erase(ts.begin() + i);
-							delcounter++;
-							i = -1;
+							cout << endl << " ";
+							cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+							if (ts[i].old)
+								cout << "Yes";
+							else
+								cout << "No";
+							cout << endl;
 						}
 					}
 			}
-
-			if (del == 'y') // Remove Year Mode
-			{
-				int year;
-				char mode;
-				cout << "Enter Remove Year mode: older / newer / specific year (o/n/s)  >> "; // Choose Remove Year Mode
-				cin >> mode;
-
-				if (mode != 'o' && mode != 'n' && mode != 's') // Check Remove Year Mode
-				{
-					cout << " Unknown Remove Year Mode\n\n";
-					break;
-				}
-
-				cin >> year; // Enter Year
-				if (year < 1768)
-				{
-					cout << " Invalid year\n\n";
-					break;
-				}
-
-				if (mode == 'o') // O Remove Year Mode
-					for (int i = 0; i < ts.size(); i++)
-					{
-						if (ts[i].year > year)
-						{
-							ts.erase(ts.begin() + i);
-							delcounter++;
-							i = -1;
-						}
-					}
-
-				if (mode == 'n') // N Remove Year Mode
-					for (int i = 0; i < ts.size(); i++)
-					{
-						if (ts[i].year < year)
-						{
-							ts.erase(ts.begin() + i);
-							delcounter++;
-							i = -1;
-						}
-					}
-
-				if (mode == 's') // S Remove Year Mode
-					for (int i = 0; i < ts.size(); i++)
-					{
-						if (ts[i].year == year)
-						{
-							ts.erase(ts.begin() + i);
-							delcounter++;
-							i = -1;
-						}
-					}
-			}
-
-			if (del == 'u') // Remove Used Mode
-			{
-				int us;
-				char mode;
-
-				cout << "Enter Remove Used Mode: Remove used cars / remove not used cars (u/n) >> "; // Choose Remove Used Mode
-				cin >> mode;
-				if (mode != 'u' && mode != 'n') // Check Remove Used Mode
-				{
-					cout << " Unknown Remove Used Mode\n\n";
-					break;
-				}
-
-				if (mode == 'u') // U Remove Used Mode
-					for (int i = 0; i < ts.size(); i++)
-					{
-						if (ts[i].old)
-						{
-							ts.erase(ts.begin() + i);
-							delcounter++;
-							i = -1;
-						}
-					}
-				if (mode == 'n') // N Remove Used Mode
-					for (int i = 0; i < ts.size(); i++)
-					{
-						if (!ts[i].old)
-						{
-							ts.erase(ts.begin() + i);
-							delcounter++;
-							i = -1;
-						}
-					}
-			}
-
-			cout << " ";
-			if (delcounter > 0)
-				cout << delcounter << " cars removed\n";
 			else
-				cout << " No removed cars\n";
+				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
+			cout << endl;
+			break;
+		}
 
-			cout << endl;
-			delcounter = 0;
-			break;
-		}
-		case 4:
+		case 8:
 		{
-			string category;
-			cout << "Enter category (sport, light, heavy) >> ";
-			cin >> category;
-			if (category != "light" && category != "heavy" && category != "sport")
+			if (!empty)
 			{
-				cout << endl << "ERROR" << endl;
-				break;
-			}
-			for (int i = 0; i < ts.size(); i++)
-			{
-				if (ts[i].category == category)
-				{
-					cout << endl << " ";
-					cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
-					if (ts[i].old)
-						cout << "Yes";
-					else
-						cout << "No";
-					cout << endl;
-				}
-			}
-			cout << endl;
-			break;
-		}
-		case 5:
-		{
-			string way;
-			cout << "Enter file position with txt (C://Program Files//cars.txt) >> ";
-			cin >> way;
-			fout.open(way);
-			for (int i = 0; i < ts.size(); i++)
-			{
-				fout << ts[i].id << " " << ts[i].mark << " " << ts[i].category << " " << ts[i].price << " " << ts[i].year << " " << ts[i].old;
-				fout << endl;
-			}
-			break;
-		}
-		case 6:
-		{
-			for (int i = 0; i < ts.size() - 1; i++)
-			{
-				if (ts[i].year > ts[i + 1].year)
-				{
-					swap(ts[i], ts[i + 1]);
-					i = -1;
-				}
-			}
-			break;
-		}
-		case 7:
-		{
-			float price;
-			cout << "Enter price >> ";
-			cin >> price;
 
-			for (int i = 0; i < ts.size(); i++)
-			{
-				if (ts[i].price >= price)
-				{
-					cout << endl << " ";
-					cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
-					if (ts[i].old)
-						cout << "Yes";
-					else
-						cout << "No";
-					cout << endl;
-				}
 			}
+			else
+				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
 			cout << endl;
 			break;
 		}
+
+		case 0:
+			exit(0);
+
+		default:
+			cout << "\n Invalid Answer\n\n";
 		}
 	}
 }

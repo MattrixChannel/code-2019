@@ -2,3 +2,6 @@
 228 NeBan light 696969 1999 1
 157 Banan heavy 190000  1800 0
 683 Gucci light 12300 2010 1
+593 Lupa heavy 450000 2009 1
+274 Pupa sport 9000 2184 0
+347 Pochka heavy 999999 2017 0
