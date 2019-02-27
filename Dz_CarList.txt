@@ -41,15 +41,17 @@ void main()
 
 	bool fail = 1;
 
+	const string mainway = "Dz_CarList_input.txt";
+
 	while (fail)
 	{
 		system("cls");
 		fail = 0;
-		cout << "Need data bases's name. Example: C:\\\\Program Files\\\\database.txt (1 for Dz_CarList_input.txt; 0 for exit)\n Name >> "; // Enter database's way
+		cout << "Need data bases's name. Example: C:\\\\Program Files\\\\database.txt (1 for " << mainway << "; 0 for exit)\n Name >> "; // Enter database's way
 		string database;
 		cin >> database;
 		if (database == "1")
-			database = "Dz_CarList_input1.txt";
+			database = mainway;
 		if (database == "0")
 			exit(0);
 
@@ -64,13 +66,13 @@ void main()
 			cout << " Failure connection";
 			Sleep(500);
 			cout << "\n Please Retry\n Retry in" << endl;
-			Sleep(1000);
+			Sleep(500);
 			cout << " 3";
-			Sleep(1000);
+			Sleep(500);
 			cout << " 2";
-			Sleep(1000);
+			Sleep(500);
 			cout << " 1";
-			Sleep(1000);
+			Sleep(500);
 			fail = 1;
 		}
 	}
@@ -125,6 +127,14 @@ void main()
 
 	while (answer != 0) // Main cycle
 	{
+		bool empty = 0;
+
+		if (ts.size() < 1)
+		{
+			empty = true;
+			cout << "Warning! DataBase is empty, you can add car (#2)\n\n";
+		}
+
 		cout << "  --Menu--\n"; // Menu
 		cout << " 1 Car list \n 2 Add car \n 3 Remove car \n 4 Show specific car category \n 5 Save as a file" << endl;
 		cout << " 6 Sort by years \n 7 Show car with specific price \n 8 Save Specific Car's info \n 0 exit\n" << endl;
@@ -134,7 +144,6 @@ void main()
 
 		system("cls"); // Remove menu after answer
 
-		bool empty = 0;
 
 		if (ts.size() < 1)
 			empty = 1;
@@ -144,8 +153,10 @@ void main()
 
 		case 1: // Car list
 		{
-			cout << "  --Car List--";
+
 			if (!empty)
+			{
+				cout << "  --Car List--";
 				for (int i = 0; i < ts.size(); i++)
 				{
 					cout << endl << " ";
@@ -155,9 +166,8 @@ void main()
 					else
 						cout << "No" << endl;
 				}
-			else
-				cout << endl << " Empty\n";
-			cout << endl;
+				cout << endl;
+			}
 			break;
 		}
 
@@ -472,10 +482,8 @@ void main()
 					cout << " No removed cars\n";
 
 				delcounter = 0;
+				cout << endl;
 			}
-			else
-				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
-			cout << endl;
 			break;
 		}
 
@@ -504,10 +512,8 @@ void main()
 						cout << endl;
 					}
 				}
+				cout << endl;
 			}
-			else
-				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
-			cout << endl;
 			break;
 		}
 
@@ -525,10 +531,8 @@ void main()
 					fout << endl;
 				}
 				fout.close();
+				cout << endl;
 			}
-			else
-				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
-			cout << endl;
 			break;
 		}
 
@@ -562,10 +566,8 @@ void main()
 							i = -1;
 						}
 					}
+				cout << endl;
 			}
-			else
-				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
-			cout << endl;
 			break;
 		}
 
@@ -636,10 +638,8 @@ void main()
 							cout << endl;
 						}
 					}
+				cout << endl;
 			}
-			else
-				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
-			cout << endl;
 			break;
 		}
 
@@ -647,11 +647,87 @@ void main()
 		{
 			if (!empty)
 			{
+				string waysave;
+				cout << "Enter file position with txt. Example, cars.txt - file: C:\\\\Program Files\\\\cars.txt) >> ";
+				cin >> waysave; // Enter Way
 
+				cout << "Find by id or mark? (i/m) >> "; // Choose Find Mode
+				char mode;
+				cin >> mode;
+				if (mode != 'i' && mode != 'm') // Check Find Mode
+				{
+					cout << " Unknown Find Car Mode\n\n";
+					break;
+				}
+
+				for (int i = 0; i < ts.size(); i++)
+				{
+					cout << endl << " ";
+					cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+					if (ts[i].old)
+						cout << "Yes" << endl;
+					else
+						cout << "No" << endl;
+				}
+
+				int cari = -1;
+
+				if (mode == 'i') // Id mode
+				{
+					cout << "\nEnter id >> ";
+					int id;
+					cin >> id;
+					if (id < 1)
+					{
+						cout << " Invalid Id\n\n";
+						break;
+					}
+					for (int i = 0; i < ts.size(); i++)
+					{
+						if (ts[i].id == id)
+						{
+							cari = i;
+						}
+					}
+
+				}
+				if (mode == 'm') // Mark Mode
+				{
+					cout << "\nEnter mark >> ";
+					string mark;
+					cin >> mark;
+					for (int i = 0; i < ts.size(); i++)
+					{
+						if (ts[i].mark == mark)
+						{
+							cari = i;
+						}
+					}
+				}
+
+				if (cari == -1) // Fail
+				{
+					cout << " Can't find car, try again please\n\n";
+					break;
+				}
+				else
+				{
+					fout.open(waysave); // Fout Passport
+					fout << " ---Car Passport---" << endl;
+					fout << " Id---------" << ts[cari].id << endl;
+					fout << " Mark-------" << ts[cari].mark << endl;
+					fout << " Category---" << ts[cari].category << endl;
+					fout << " Price------" << ts[cari].price << "$" << endl;
+					fout << " Year-------" << ts[cari].year << "y" << endl;
+					fout << " Used?------";
+					if (ts[cari].old)
+						fout << "Yes";
+					if (!ts[cari].old)
+						fout << "No";
+					fout.close();
+				}
+				cout << endl;
 			}
-			else
-				cout << " Sorry your base is empty, but you can add car (¹ 2)\n";
-			cout << endl;
 			break;
 		}
 
