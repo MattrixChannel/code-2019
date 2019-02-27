@@ -137,7 +137,7 @@ void main()
 
 		cout << "  --Menu--\n"; // Menu
 		cout << " 1 Car list \n 2 Add car \n 3 Remove car \n 4 Show specific car category \n 5 Save as a file" << endl;
-		cout << " 6 Sort by years \n 7 Show car with specific price \n 8 Save Specific Car's info \n 0 exit\n" << endl;
+		cout << " 6 Sort by years \n 7 Show car with specific price \n 8 Save Specific Car's info \n 9 Show all cars' summed price \n 0 exit\n" << endl;
 		cout << "Answer >> ";
 
 		cin >> answer;
@@ -160,7 +160,7 @@ void main()
 				for (int i = 0; i < ts.size(); i++)
 				{
 					cout << endl << " ";
-					cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+					cout << left << setw(6) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
 					if (ts[i].old)
 						cout << "Yes" << endl;
 					else
@@ -239,7 +239,7 @@ void main()
 				for (int i = 0; i < ts.size(); i++) // Show car list
 				{
 					cout << endl << " ";
-					cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+					cout << left << setw(6) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
 					if (ts[i].old)
 						cout << "Yes" << endl;
 					else
@@ -399,6 +399,7 @@ void main()
 						break;
 					}
 
+					cout << "Enter year >> ";
 					cin >> year; // Enter Year
 					if (year < 1768)
 					{
@@ -409,7 +410,7 @@ void main()
 					if (mode == 'o') // O Remove Year Mode
 						for (int i = 0; i < ts.size(); i++)
 						{
-							if (ts[i].year > year)
+							if (ts[i].year < year)
 							{
 								ts.erase(ts.begin() + i);
 								delcounter++;
@@ -420,7 +421,7 @@ void main()
 					if (mode == 'n') // N Remove Year Mode
 						for (int i = 0; i < ts.size(); i++)
 						{
-							if (ts[i].year < year)
+							if (ts[i].year > year)
 							{
 								ts.erase(ts.begin() + i);
 								delcounter++;
@@ -504,7 +505,7 @@ void main()
 					if (ts[i].category == category)
 					{
 						cout << endl << " ";
-						cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+						cout << left << setw(6) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
 						if (ts[i].old)
 							cout << "Yes";
 						else
@@ -578,7 +579,7 @@ void main()
 				float price;
 				char mode;
 
-				cout << "Enter Show Price Mode: More Less Same (m/l/s) >> "; // Choose Show Price Mode
+				cout << "Enter Show Price Mode: More / Less / Same (m/l/s) >> "; // Choose Show Price Mode
 				cin >> mode;
 				if (mode != 'm' && mode != 'l' && mode != 's') // Chack Mode
 				{
@@ -600,7 +601,7 @@ void main()
 						if (ts[i].price > price)
 						{
 							cout << endl << " ";
-							cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+							cout << left << setw(6) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
 							if (ts[i].old)
 								cout << "Yes";
 							else
@@ -615,7 +616,7 @@ void main()
 						if (ts[i].price < price)
 						{
 							cout << endl << " ";
-							cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+							cout << left << setw(6) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
 							if (ts[i].old)
 								cout << "Yes";
 							else
@@ -630,7 +631,7 @@ void main()
 						if (ts[i].price == price)
 						{
 							cout << endl << " ";
-							cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+							cout << left << setw(6) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
 							if (ts[i].old)
 								cout << "Yes";
 							else
@@ -643,7 +644,7 @@ void main()
 			break;
 		}
 
-		case 8:
+		case 8: // Save Specific Car's info
 		{
 			if (!empty)
 			{
@@ -663,7 +664,7 @@ void main()
 				for (int i = 0; i < ts.size(); i++)
 				{
 					cout << endl << " ";
-					cout << left << setw(4) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
+					cout << left << setw(6) << ts[i].id << setw(10) << ts[i].mark << setw(7) << ts[i].category << ts[i].price << setw(3) << "$" << ts[i].year << setw(3) << "y" << "Had beed used? ";
 					if (ts[i].old)
 						cout << "Yes" << endl;
 					else
@@ -710,8 +711,9 @@ void main()
 					cout << " Can't find car, try again please\n\n";
 					break;
 				}
-				else
+				else // Success
 				{
+					cout << "Success!\n";
 					fout.open(waysave); // Fout Passport
 					fout << " ---Car Passport---" << endl;
 					fout << " Id---------" << ts[cari].id << endl;
@@ -731,6 +733,20 @@ void main()
 			break;
 		}
 
+		case 9: // Show all cars' summed price 
+		{
+			if (!empty)
+			{
+				float price = 0;
+				for (int i = 0; i < ts.size(); i++)
+				{
+					price += ts[i].price;
+				}
+				cout << "\n All your cars totally costs >> " << price << "$!!!\n";
+				cout << endl;
+			}
+			break;
+		}
 		case 0:
 			exit(0);
 
