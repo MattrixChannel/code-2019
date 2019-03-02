@@ -1,0 +1,71 @@
+#include <iostream>
+#include <bitset>
+
+using namespace std;
+
+struct point
+{
+	float x;
+	float y;
+};
+point mid(point a, point b)
+{
+	point c;
+	struct smallest
+	{
+		float x;
+		float y;
+	};
+
+	struct biggest
+	{
+		float x, y;
+	};
+
+	smallest sm;
+	biggest bg;
+
+	if (a.x >= b.x)
+	{
+		sm.x = a.x;
+		bg.x = b.x;
+	}
+	else
+	{
+		sm.x = b.x;
+		bg.x = a.x;
+	}
+
+	if (a.y >= b.y)
+	{
+		sm.y = a.y;
+		bg.y = b.y;
+	}
+	else
+	{
+		sm.y = b.y;
+		bg.y = a.y;
+	}
+
+	c.x = (bg.x - sm.x)/2 + sm.x;
+	c.y = (bg.y - sm.y) / 2 + sm.y;
+
+	return c;
+}
+
+void main()
+{
+	point a, b, c;
+
+	a.x = -4;
+	a.y = 4;
+
+	b.x = 4;
+	b.y = 4;
+
+	c = mid(a, b);
+
+	cout << c.x << " " << c.y << endl;
+
+	system("pause");
+}
