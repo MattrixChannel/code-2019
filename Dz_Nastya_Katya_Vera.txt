@@ -1,0 +1,114 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <Windows.h>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
+
+using namespace std;
+
+struct woman
+{
+	string name;
+	int age;
+	bool married;
+};
+
+struct child
+{
+	string name;
+	int age;
+	bool married;
+};
+
+child baby(woman wm)
+{
+	child ch;
+	if (wm.age > 17 && wm.married)
+	{
+		ch.age = rand() % (wm.age - 17);
+		ch.name = "Anatoliy";
+		if (ch.age > 17)
+			ch.married = rand() % 2;
+		else
+			ch.married = 0;
+	}
+	else
+	{
+		ch.age = 0;
+		ch.name = "Didn't born";
+		ch.married = 0;
+	}
+	return ch;
+}
+
+void com(woman wm)
+{
+	cout << wm.name << ", вы так красивы! А в свои " << wm.age << " вы просто идеал!";
+}
+
+void main()
+{
+	srand(time(NULL));
+	setlocale(LC_ALL, "Rus");
+
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	vector<woman> wm;
+	vector<child> ch;
+
+	for (int i = 0; i < 1; i++)
+	{
+		woman buf;
+		buf.name = "Nastya";
+		buf.age = 45;
+		buf.married = 1;
+		wm.push_back(buf);
+	}
+
+	for (int i = 0; i < 1; i++)
+	{
+		woman buf;
+		buf.name = "Katya";
+		buf.age = 16;
+		buf.married = 0;
+		wm.push_back(buf);
+	}
+
+	for (int i = 0; i < 1; i++)
+	{
+		woman buf;
+		buf.name = "Vera";
+		buf.age = 22;
+		buf.married = 0;
+		wm.push_back(buf);
+	}
+
+	for (int i = 0; i < wm.size(); i++)
+	{
+		cout << "Woman:\n";
+		cout << "    Age: " << wm[i].age << "\n    Name: " << wm[i].name << "\n    Married: ";
+		if (wm[i].married)
+			cout << "Yes";
+		else
+			cout << "No";
+		cout << endl << "  ";
+		com(wm[i]);
+		cout << endl << endl;
+
+		ch.push_back(baby(wm[i]));
+
+		cout << "  Baby:\n";
+		cout << "    Age: " << ch[i].age << "\n    Name: " << ch[i].name << "\n    Married: ";
+		if (ch[i].married)
+			cout << "Yes";
+		else
+			cout << "No";
+		cout << endl << endl;
+	}
+
+	system("pause");
+}
