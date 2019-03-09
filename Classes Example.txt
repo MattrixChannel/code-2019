@@ -1,0 +1,140 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <Windows.h>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
+
+using namespace std;
+
+class Worker
+{
+protected:
+	float salary;
+	float money;
+	string name;
+	string company;
+public:
+	Worker()
+	{
+		salary = 100;
+		money = 10;
+		name = "";
+		company = "";
+	}
+	Worker(int sal, int mon, string nam, string com)
+	{
+		salary = sal;
+		money = mon;
+		name = nam;
+		company = com;
+	}
+	float Getsalary()
+	{
+		return salary;
+	}
+	float Getmoney()
+	{
+		return money;
+	}
+	string Getname()
+	{
+		return name;
+	}
+	string Getcompany()
+	{
+		return company;
+	}
+
+	void PayDay()
+	{
+		money += salary;
+	}
+
+	void TooLowSal()
+	{
+		salary += 1000;
+	}
+
+	void Show()
+	{
+		cout << "  ---Profile---\n";
+		cout << "    Name: " << Getname() << endl << "    Company: " << Getcompany() << endl << "    Salary: " << Getsalary() << endl << "    Total Money: " << Getmoney() << endl << endl;
+	}
+};
+/*
+class Boss : public Worker
+{
+private:
+	string secretary;
+public:
+	Boss()
+	{
+		salary = 100;
+		money = 10;
+		name = "";
+		company = "";
+		secretary = "";
+	}
+	void Idle()
+	{
+		cout << " Готов отдыхать";
+	}
+};
+*/
+
+void main()
+{
+	srand(time(NULL));
+	setlocale(LC_ALL, "Rus");
+
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	vector<Worker> wk;
+	vector<string> company_list;
+	company_list.push_back("Google");
+	company_list.push_back("Yandex");
+	company_list.push_back("Mail.Ru");
+	company_list.push_back("Sumsung");
+	company_list.push_back("Microsoft");
+	vector <string> names;
+	names.push_back("Anatoliy");
+	names.push_back("Basya");
+	names.push_back("Kolya");
+	names.push_back("Sasha");
+	names.push_back("Kirill");
+
+	for (int i = 0; i < 10; i++)
+	{
+		int sal = rand() % 20000 + 1;
+		int money = rand() % 10001;
+		int raname = rand() % names.size();
+		string name = names[raname];
+		int racom = rand() % company_list.size();
+		string com = company_list[raname];
+		wk.push_back(Worker(sal, money, name, com));
+		wk[i].Show();
+	}
+
+	float MidSal = 0;
+
+	for (int i = 0; i < wk.size(); i++)
+	{
+		MidSal += wk[i].Getsalary();
+	}
+	MidSal /= wk.size();
+
+
+	cout << "MidSal = " << MidSal << " Changed Salary:" << endl << endl;
+
+	for (int i = 0; i < wk.size(); i++)
+	{
+		if (wk[i].Getsalary() < MidSal)
+			wk[i].TooLowSal();
+		wk[i].Show();
+	}
+
+	system("pause");
+}
