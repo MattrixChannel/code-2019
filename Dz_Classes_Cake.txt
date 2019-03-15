@@ -1,0 +1,133 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <Windows.h>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
+
+using namespace std;
+
+class Cake
+{
+private:
+	string filling;
+	int weight;
+	bool done;
+public:
+	Cake(string fil, int wei)
+	{
+		filling = fil;
+		weight = wei;
+		done = 0;
+	}
+	void Cook()
+	{
+		if (done)
+			cout << "\n You've already cooked your cake\n\n";
+		else
+		{
+			done = 1;
+			cout << "\n Your cake has been successfully cooked!\n\n";
+		}
+	}
+	void Eat()
+	{
+		if (done)
+		{
+			cout << "\n You've eaten your cake\n\n";
+		}
+		else
+		{
+			cout << "\n You can't eat uncooked cake\n\n";
+		}
+	}
+	void GetWei()
+	{
+		cout << "\n Your cake's weight is " << weight << "kg\n\n";
+	}
+	void GetFil()
+	{
+		cout << "\n Your cake's filling is " << filling << endl << endl;
+	}
+	void GetDon()
+	{
+		if (done)
+			cout << "\n Your cake's already cooked\n\n";
+		if (!done)
+			cout << "\n Your cake still hasn't cooked\n\n";
+	}
+};
+
+void main()
+{
+	srand(time(NULL));
+	setlocale(LC_ALL, "Rus");
+
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	string fil;
+	int kg;
+
+	bool end = 0, done = 0;
+	while (!done)
+	{
+		cout << " Enter your cake's filling >> ";
+		cin >> fil;
+		cout << " Enter your cake's weight (kg) >> ";
+		cin >> kg;
+		if (kg <= 0)
+		{
+			cout << "\n Invalid weight\n\n";
+		}
+		else
+		{
+			done = 1;
+		}
+	}
+	Cake Cupk(Cake(fil, kg));
+
+	system("cls");
+	while (!end)
+	{
+		cout << " --Menu--";
+		cout << "\n 1 - Cook the cake\n 2 - Eat cake\n 3 - Show cake's weight\n 4 - Show cake's filling\n 5 - Show cake's status (cooked or no)\n 0 - Exit";
+		cout << "\n Answer >> ";
+		int answer;
+		cin >> answer;
+		system("cls");
+		switch (answer)
+		{
+		case 1:
+		{
+			Cupk.Cook();
+			break;
+		}
+		case 2:
+		{
+			Cupk.Eat();
+			break;
+		}
+		case 3:
+		{
+			Cupk.GetWei();
+			break;
+		}
+		case 4:
+		{
+			Cupk.GetFil();
+			break;
+		}
+		case 5:
+		{
+			Cupk.GetDon();
+			break;
+		}
+		default:
+			exit(0);
+		}
+	}
+	system("pause");
+}
