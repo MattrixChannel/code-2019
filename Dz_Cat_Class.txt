@@ -1,0 +1,261 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <Windows.h>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
+
+using namespace std;
+
+class Cat
+{
+private:
+	string color;
+	string name;
+	string status; // sleep sit walk
+	int old;
+	int mood;
+	int hp;
+public:
+	Cat()
+	{
+		color = "White";
+		name = "Barsik";
+		status = "sleep";
+		old = 1;
+		mood = 10;
+		hp = 10;
+	}
+	Cat(string col, string nam, string stat, int oldd, int mod, int hpb)
+	{
+		color = col;
+		name = nam;
+		status = stat;
+		old = oldd;
+		mood = mod;
+		hp = hpb;
+	}
+
+	int GetMood()
+	{
+		return mood;
+	}
+
+	int GetHealth()
+	{
+		return hp;
+	}
+
+	int GetAge()
+	{
+		return old;
+	}
+	
+	void GetStats()
+	{
+		cout << "Name: " + name << endl;
+		cout << "Color: " + color << endl;
+		if (status == "sleep")
+			cout << "Sleeping now\n" << endl;
+		if (status == "sit")
+			cout << "Sitting now\n" << endl;
+		if (status == "walk")
+			cout << "Walking now\n" << endl;
+		cout << name + " is " << old << " years old\n" << endl;
+		cout << "Mood: ";
+		int count;
+		for (int i = 0; i < mood; i++)
+		{
+			cout << static_cast<char>(219) << static_cast<char>(219) << static_cast<char>(219) << "  ";
+		}
+		for (int i = 0; i < 10 - mood; i++)
+		{
+			cout << static_cast<char>(222) << "-" << static_cast<char>(221) << "  ";
+		}
+		cout << mood << "/10\n\n";
+
+		cout << "Health: ";
+		for (int i = 0; i < hp; i++)
+		{
+			cout << static_cast<char>(219) << static_cast<char>(219) << static_cast<char>(219) << "  ";
+		}
+		for (int i = 0; i < 10 - hp; i++)
+		{
+			cout << static_cast<char>(222) << "-" << static_cast<char>(221) << "  ";
+		}
+		cout << hp << "/10\n\n";
+	}
+
+	void Play()
+	{
+		if (status == "sit")
+		{
+			int up = 0;
+			up = rand() % (11 - mood);
+			mood += up;
+			cout << "  You played with " + name + " and his mood grows on " << up << " points!\n\n";
+		}
+		else
+		{
+			cout << "You can play with " + name + " only, if he's sitting\n\n";
+		}
+	}
+
+	void Feed()
+	{
+		if (status == "sit")
+		{
+			int up = 0;
+			up = rand() % (11 - hp);
+			hp += up;
+			cout << "  You fed " + name + " and his health grows on " << up << " points!\n\n";
+		}
+		else
+		{
+			cout << "You can feed " + name + " only, if he's sitting\n\n";
+		}
+	}
+
+	void Wake()
+	{
+		if (status == "sit")
+		{
+			cout << name + " has already sat\n\n";
+		}
+		else
+		{
+			status = "sit";
+			cout << name + " is sitting now\n\n";
+		}
+	}
+
+	void Throw()
+	{
+		status = "walk";
+		cout << name + " is walking now\n\n";
+	}
+
+	void RandomEvent()
+	{
+		mood -= 2;
+		hp -= 2;
+		old += 1;
+		cout << name + " is " << old << " now!\n\n";
+	}
+};
+
+void main()
+{
+	srand(time(NULL));
+	string color;
+	string name;
+	string status; // sleep sit walk
+	int old;
+	int mood;
+	int hp;
+
+	bool end = 0, done = 0;
+	while (!done)
+	{
+		cout << " Enter your cat's name >> ";
+		cin >> name;
+
+		cout << " Enter your cat's color >> ";
+		cin >> color;
+
+		cout << " Enter your cat's status (sleep / sit / walk) >> ";
+		cin >> status;
+		if (status != "sleep" && status != "sit" && status != "walk")
+		{
+			cout << "\n Invalid cat's status" << endl;
+			continue;
+		}
+
+		cout << " Enter your cat's age >> ";
+		cin >> old;
+		if (old < 0)
+		{
+			cout << "\n Invalid cat's age" << endl;
+			continue;
+		}
+
+		cout << " Enter your cat's mood >> ";
+		cin >> mood;
+		if (mood < 0 || mood > 10)
+		{
+			cout << "\n Invalid cat's mood" << endl;
+			continue;
+		}
+
+		cout << " Enter your cat's health >> ";
+		cin >> hp;
+		if (hp < 0 || hp > 10)
+		{
+			cout << "\n Invalid cat's health" << endl;
+			continue;
+		}
+		done = 1;
+	}
+	Cat Cot(Cat(color, name, status, old, mood, hp));
+
+	system("cls");
+	while (!end)
+	{
+		Cot.GetStats();
+		cout << " --Menu--";
+		cout << "\n 1 - Play with cat\n 2 - Feed cat\n 3 - Wake up cat\n 4 - Throw cat outside  \n\n 0 - Exit";
+		cout << "\n Answer >> ";
+		int answer;
+		cin >> answer;
+		system("cls");
+		switch (answer)
+		{
+		case 1:
+		{
+			Cot.Play();
+			if (rand() % 5 == 4)
+				Cot.RandomEvent();
+			break;
+		}
+		case 2:
+		{
+			Cot.Feed();
+			if (rand() % 5 == 4)
+				Cot.RandomEvent();
+			break;
+		}
+		case 3:
+		{
+			Cot.Wake();
+			if (rand() % 5 == 4)
+				Cot.RandomEvent();
+			break;
+		}
+		case 4:
+		{
+			Cot.Throw();
+			if (rand() % 5 == 4)
+				Cot.RandomEvent();
+			break;
+		}
+		case 0:
+		{
+			exit(0);
+		}
+		default:
+		{
+			cout << "\n ERROR\n\n";
+		}
+		}
+		if (Cot.GetHealth() < 1 || Cot.GetMood() < 1 || Cot.GetAge())
+		{
+			system("cls");
+			cout << name + " is dead...";
+			Sleep(5000);
+			exit(0);
+		}
+	}
+	system("pause");
+}
