@@ -152,9 +152,9 @@ void main()
 	string color;
 	string name;
 	string status; // sleep sit walk
-	int old;
-	int mood;
-	int hp;
+	int old = 0;
+	int mood = 0;
+	int hp = 0;
 
 	bool end = 0, done = 0;
 	while (!done)
@@ -167,34 +167,34 @@ void main()
 
 		cout << " Enter your cat's status (sleep / sit / walk) >> ";
 		cin >> status;
-		if (status != "sleep" && status != "sit" && status != "walk")
+		while (status != "sleep" && status != "sit" && status != "walk")
 		{
-			cout << "\n Invalid cat's status" << endl;
-			continue;
+			cout << "Invalid cat's status" << endl;
+			cin >> status;
 		}
 
 		cout << " Enter your cat's age >> ";
 		cin >> old;
-		if (old < 0)
+		while (old < 0)
 		{
-			cout << "\n Invalid cat's age" << endl;
-			continue;
+			cout << "Invalid cat's age" << endl;
+			cin >> old;
 		}
 
 		cout << " Enter your cat's mood >> ";
 		cin >> mood;
-		if (mood < 0 || mood > 10)
+		while (mood < 0 || mood > 10)
 		{
-			cout << "\n Invalid cat's mood" << endl;
-			continue;
+			cout << "Invalid cat's mood" << endl;
+			cin >> mood;
 		}
 
 		cout << " Enter your cat's health >> ";
 		cin >> hp;
-		if (hp < 0 || hp > 10)
+		while (hp < 0 || hp > 10)
 		{
-			cout << "\n Invalid cat's health" << endl;
-			continue;
+			cout << "Invalid cat's health" << endl;
+			cin >> hp;
 		}
 		done = 1;
 	}
@@ -249,7 +249,7 @@ void main()
 			cout << "\n ERROR\n\n";
 		}
 		}
-		if (Cot.GetHealth() < 1 || Cot.GetMood() < 1 || Cot.GetAge())
+		if (Cot.GetHealth() < 1 || Cot.GetMood() < 1 || Cot.GetAge() >= 100)
 		{
 			system("cls");
 			cout << name + " is dead...";
