@@ -1,0 +1,48 @@
+#include <iostream>
+#include <Windows.h>
+#include <conio.h>
+#include <ctime>
+#include <iomanip>
+#include <fstream>
+#include <string>
+#include "Lab.h"
+
+using namespace std;
+
+struct point
+{
+	int x;
+	int y;
+};
+
+void main()
+{
+	//setlocale(LC_ALL, "Rus");
+	srand(time(NULL));
+	//SetConsoleCP(1251);
+	//SetConsoleOutputCP(1251);
+	Lab Lb;
+	Lb.EnableFog();
+	while (true)
+	{
+		string direct = " ";
+		system("cls");
+		Lb.ShowMap();
+		int key = _getch();
+		if (key == 72 || key == 150 || key == 230) // up
+			direct = "up";
+		if (key == 80 || key == 155 || key == 235) // down
+			direct = "down";
+		if (key == 77 || key == 130 || key == 262) // right
+			direct = "right";
+		if (key == 75 || key == 148 || key == 235) // left
+			direct = "left";
+
+		if (key == 27) // exit
+			exit(0);
+
+		Lb.Move(direct)
+			;
+	}
+	system("pause");
+}

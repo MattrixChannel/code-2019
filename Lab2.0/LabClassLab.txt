@@ -1,0 +1,189 @@
+#pragma once
+#include <iostream>
+#include <Windows.h>
+#include <conio.h>
+#include <ctime>
+#include <iomanip>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+class Lab
+{
+private:
+	int map[3][7][7];
+	int level;
+	int current_i;
+	int current_j;
+	int score;
+	bool end;
+	bool fog;
+	void FindStart()
+	{
+		for (int i = 0; i < 7; i++)
+			for (int j = 0; j < 7; j++)
+				if (map[level][i][j] == 2)
+				{
+					current_i = i;
+					current_j = j;
+				}
+	}
+
+public:
+	Lab()
+	{
+		level = 0;
+		ifstream fin;
+		fin.open("map.txt");
+		if (fin.is_open())
+		{
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 7; j++)
+					for (int o = 0; o < 7; o++)
+						fin >> map[i][j][o];
+		}
+		else
+		{
+			cout << "\nError loading map\n";
+		}
+		FindStart();
+		score = 0;
+		end = 0;
+		fog = 0;
+	}
+
+	void EnableFog()
+	{
+		fog = true;
+	}
+
+	void ShowMap()
+	{
+		cout << static_cast<char>(201);
+		for (int i = 0; i < 14; i++)
+			cout << static_cast<char>(205);
+		cout << static_cast<char>(187) << endl;
+
+		for (int i = 0; i < 7; i++)
+		{
+			cout << static_cast<char>(186);
+			for (int j = 0; j < 7; j++)
+			{
+				if (fog)
+				{
+					if ((current_i + 1 == i || current_i == i || current_i - 1 == i))
+						if ((current_j + 1 == j || current_j == j || current_j - 1 == j))
+						{
+							if (map[level][i][j] == 1)
+							{
+								cout << static_cast<char>(219);
+								cout << static_cast<char>(219);
+							}
+							if (map[level][i][j] == 2)
+							{
+								cout << static_cast<char>(204);
+								cout << static_cast<char>(185);
+							}
+							if (map[level][i][j] == 0)
+							{
+								cout << " ";
+								cout << " ";
+							}
+							if (map[level][i][j] == 4)
+							{
+								cout << static_cast<char>(123);
+								cout << static_cast<char>(125);
+							}
+							if (map[level][i][j] == 3)
+							{
+								cout << static_cast<char>(17);
+								cout << static_cast<char>(16);
+							}
+						}
+						else
+						{
+							cout << static_cast<char>(177);
+							cout << static_cast<char>(177);
+						}
+					else
+					{
+						cout << static_cast<char>(177);
+						cout << static_cast<char>(177);
+					}
+				}
+				else
+				{
+					if (map[level][i][j] == 1)
+					{
+						cout << static_cast<char>(219);
+						cout << static_cast<char>(219);
+					}
+					if (map[level][i][j] == 2)
+					{
+						cout << static_cast<char>(204);
+						cout << static_cast<char>(185);
+					}
+					if (map[level][i][j] == 0)
+					{
+						cout << " ";
+						cout << " ";
+					}
+					if (map[level][i][j] == 4)
+					{
+						cout << static_cast<char>(123);
+						cout << static_cast<char>(125);
+					}
+					if (map[level][i][j] == 3)
+					{
+						cout << static_cast<char>(17);
+						cout << static_cast<char>(16);
+					}
+				}
+			}
+			cout << static_cast<char>(186) << endl;
+		}
+		cout << static_cast<char>(200);
+
+		for (int i = 0; i < 14; i++)
+			cout << static_cast<char>(205);
+		cout << static_cast<char>(188) << endl;
+		cout << " Score >> " << score << "\n Level >> " << level + 1;
+	}
+	void Move(string direction)
+	{
+		map[level][current_i][current_j] = 0;
+		if (direction == "up" && map[level][current_i - 1][current_j] >= 0 && map[level][current_i - 1][current_j] != 1)
+		{
+			current_i -= 1;
+		}
+		if (direction == "down" && map[level][current_i + 1][current_j] >= 0 && map[level][current_i + 1][current_j] != 1)
+		{
+			current_i += 1;
+		}
+		if (direction == "right" && map[level][current_i][current_j + 1] >= 0 && map[level][current_i][current_j + 1] != 1)
+		{
+			current_j += 1;
+		}
+		if (direction == "left" && map[level][current_i][current_j - 1] >= 0 && map[level][current_i][current_j - 1] != 1)
+		{
+			current_j -= 1;
+		}
+		if (map[level][current_i][current_j] == 3)
+			score++;
+		if (map[level][current_i][current_j] == 4)
+		{
+			level++;
+			FindStart();
+		}
+		if (level > 2)
+		{
+			system("cls");
+			cout << "\n\n\n     Victory! \n\n   Your score:\n        " << score << endl;
+			Sleep(5000);
+			exit(0);
+		}
+		map[level][current_i][current_j] = 2;
+
+	}
+};
