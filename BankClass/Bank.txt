@@ -1,0 +1,77 @@
+#pragma once
+#include <iostream>
+#include <Windows.h>
+#include <conio.h>
+#include <ctime>
+#include <iomanip>
+#include <fstream>
+#include <vector>
+#include <string>
+#include "Account.h"
+
+using namespace std;
+
+class Bank
+{
+private:
+	vector<Account> base;
+
+public:
+	Bank()
+	{
+		ifstream fin;
+		fin.open("base.txt");
+
+		if (fin.is_open())
+		{
+			while (!fin.eof())
+			{
+				string fio;
+				string f, i, o;
+				double money;
+				string id;
+				string type;
+
+				fin >> f;
+				fin >> i;
+				fin >> o;
+				fio = f + " " + i + " " + o;
+				fin >> money;
+				fin >> id;
+				fin >> type;
+
+				Account buf(fio, money, id, type);
+
+				base.push_back(buf);
+			}
+
+			fin.close();
+		}
+		else
+		{
+			cout << "\n Error loading base from file\n";
+		}
+	}
+
+	void Show()
+	{
+		cout << "Base:\n\n";
+
+		cout << left << setw(34) << "FIO:" << setw(9) << "Money:" << setw(13) << "Id:" << setw(9) << "Type:" << endl;
+
+		for (int i = 0; i < base.size(); i++)
+		{
+			cout << left << "  " << setw(34) << base[i].Getfio() << setw(9) << base[i].Getmoney() << setw(13) << base[i].Getid() << setw(9) << base[i].Gettype() << endl;
+		}
+	}
+
+	void Createaccount()
+	{
+
+	}
+
+	int Getbasesize()
+	{
+		return base.size();
+	}
+};

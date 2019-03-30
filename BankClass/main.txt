@@ -1,0 +1,64 @@
+#include <iostream>
+#include <Windows.h>
+#include <conio.h>
+#include <ctime>
+#include <iomanip>
+#include <fstream>
+#include <string>
+#include "Bank.h"
+
+using namespace std;
+
+
+
+void main()
+{
+	//setlocale(LC_ALL, "Rus");
+	srand(time(NULL));
+	//SetConsoleCP(1251);
+	//SetConsoleOutputCP(1251);
+	Bank ban;
+
+	while (true)
+	{
+		int answer;
+
+		ban.Show();
+	}
+
+	{
+		string fio;
+		double money;
+		string id;
+		string type;
+
+		cout << " Enter fio: ";
+		cin >> fio;
+		cout << " Enter your balance: ";
+		while (true)
+		{
+			cin >> money;
+			if (money < 0)
+			{
+				cout << " Invalid balance, try again: ";
+			}
+			else
+				break;
+		}
+
+		cout << " Enter id: ";
+		cin >> id;
+
+		cout << " Enter account's type: ";
+		while (true)
+		{
+			cin >> type;
+			if (type != "debit" && type != "deposit" && type != "credit")
+			{
+				cout << " Invalid type, try again: ";
+			}
+			else
+				break;
+		}
+	}
+}
