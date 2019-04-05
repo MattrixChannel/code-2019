@@ -1,0 +1,90 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+class T9
+{
+private:
+	vector<string> name;
+public:
+	T9()
+	{
+		ifstream fin;
+		fin.open("NamesBase.txt");
+
+		if (fin.is_open())
+		{
+			while (!fin.eof())
+			{
+				string buf;
+				fin >> buf;
+				name.push_back(buf);
+			}
+		}
+
+		else
+		{
+			cout << "Uploading base failure" << endl;
+		}
+
+		fin.close();
+	}
+
+	void RemoveNumb()
+	{
+		for (int i = 0; i < name.size(); i++)
+		{
+			for (int j = 0; j < name[i].length(); j++)
+			{
+				if (name[i][j] == '1' || name[i][j] == '2' || name[i][j] == '3' || name[i][j] == '4' || name[i][j] == '5' || name[i][j] == '6' || name[i][j] == '7' || name[i][j] == '8' || name[i][j] == '9')
+				{
+					name[i].erase(name[i].begin() + j);
+					j -= 1;
+				}
+			}
+		}
+	}
+
+	void RemoveDuplic()
+	{
+		for (int i = 0; i < name.size(); i++)
+		{
+			for (int j = i + 1; j < name.size(); j++)
+			{
+				if (name[i] == name[j])
+				{
+					name.erase(name.begin() + j);
+					j -= 1;
+				}
+			}
+		}
+	}
+
+	void Save()
+	{
+		ofstream fout;
+
+		fout.open("NamesBase.txt");
+
+		for (int i = 0; i < name.size(); i++)
+		{
+			fout << name[i] << endl;
+		}
+
+		fout.close();
+	}
+};
+
+void main()
+{
+	T9 Auto;
+
+	Auto.RemoveNumb();
+	Auto.RemoveDuplic();
+	Auto.Save();
+
+	system("pause");
+}
