@@ -1,0 +1,282 @@
+#include <iostream>
+
+using namespace std;
+
+class Vector
+{
+private:
+	int length;
+	int* mas;
+
+public:
+	Vector()
+	{
+		length = 0;
+		mas = NULL;
+	}
+	~Vector()
+	{
+		delete[] mas;
+	}
+
+	//Insert!
+	//Findvalue !
+	//remove by value !
+	//Show !
+	//Size !
+	//Get !
+	//sort !
+	//Push !
+	//Remove by index !
+
+	/*
+	int Get(int index)
+	{
+		if (index >= 0 && index < length)
+			return mas[index];
+		else
+		{
+			cout << "Invalid index";
+			return NULL;
+		}
+	}
+	*/
+
+	int& operator [] (int index)
+	{
+		if (index < length && index >= 0)
+		{
+			return mas[index];
+		}
+		else
+		{
+			cout << "\n Invalid index";
+			// return NULL;
+		}
+	}
+
+	int Set (int index, int value)
+	{
+		if (index < length && index >= 0)
+		{
+		}
+		else
+		{
+			cout << "\n Invalid index";
+			// return NULL;
+		}
+	}
+
+	int Size()
+	{
+		return length;
+	}
+
+	void Show()
+	{
+		for (int i = 0; i < length; i++)
+			cout << mas[i] << endl;
+	}
+
+	bool FindValue(int value)
+	{
+		bool answ = false;
+		for (int i = 0; i < length; i++)
+		{
+			if (mas[i] == value)
+				answ = true;
+		}
+		return answ;
+	}
+
+	void Sort(char mode)
+	{
+		if (mode == 'u')
+		{
+			for (int o = 0; o < length; o++)
+			{
+				for (int i = 0; i < length - 1; i++)
+				{
+					if (mas[i] > mas[i + 1])
+						swap(mas[i], mas[i + 1]);
+				}
+			}
+		}
+
+		if (mode == 'd')
+		{
+			for (int o = 0; o < length; o++)
+			{
+				for (int i = 0; i < length - 1; i++)
+				{
+					if (mas[i] < mas[i + 1])
+						swap(mas[i], mas[i + 1]);
+				}
+			}
+		}
+	}
+
+	void RemoveByIndex(int index)
+	{
+		if (index >= 0 && index < length)
+		{
+			int* buf = new int[length - 1];
+
+			for (int i = 0; i < index; i++)
+			{
+				buf[i] = mas[i];
+			}
+			for (int i = index + 1; i < length; i++)
+			{
+				buf[i - 1] = mas[i];
+			}
+			delete[] mas;
+			mas = buf;
+			length--;
+		}
+		else
+		{
+			cout << "Invalid index";
+		}
+	}
+
+	void RemoveByValue(int value)
+	{
+		while (true)
+		{
+			int avail = false;
+			int pos = 0;
+
+			for (int i = 0; i < length; i++)
+			{
+				if (mas[i] == value)
+				{
+					pos = i;
+					avail = true;
+				}
+			}
+
+			if (!avail)
+			{
+				break;
+			}
+
+			int* buf = new int[length - 1];
+
+			for (int i = 0; i < pos; i++)
+			{
+				buf[i] = mas[i];
+			}
+			for (int i = pos + 1; i < length; i++)
+			{
+				buf[i - 1] = mas[i];
+			}
+			delete[] mas;
+			mas = buf;
+			length--;
+		}
+	}
+
+	void Push(int value)
+	{
+		int* buf = new int[length + 1];
+
+		for (int i = 0; i < length; i++)
+		{
+			buf[i] = mas[i];
+		}
+		buf[length] = value;
+		delete[] mas;
+		mas = buf;
+		length++;
+	}
+
+	void Insert(int value, int index)
+	{
+		if (index >= 0 && index <= length)
+		{
+			int *buf = new int[length + 1];
+			for (int i = 0; i < index; i++)
+			{
+				buf[i] = mas[i];
+			}
+			buf[index] = value;
+			for (int i = index + 1; i < length + 1; i++)
+			{
+				buf[i] = mas[i - 1];
+			}
+			delete[] mas;
+			mas = buf;
+			length++;
+		}
+		else
+		{
+			cout << "Invalid value" << endl;
+		}
+	}
+};
+
+void main()
+{
+	//setlocale(LC_ALL, "Rus");
+	//srand(time(NULL));
+	//SetConsoleCP(1251);
+	//SetConsoleOutputCP(1251);
+
+	Vector V;
+
+	V.Push(12);
+	V.Push(1);
+	V.Push(65);
+	V.Push(-82);
+	V.Push(422);
+	V.Push(12);
+	V.Push(-4571);
+	V.Push(0);
+
+	cout << "V.Show\n";
+	V.Show();
+	cout << endl << endl;
+
+	cout << "V[3]" << endl << V[3] << endl << endl;
+
+	cout << "V.Size()" << endl << V.Size() << endl << endl;
+
+	cout << "V.FindValue(12)" << endl << V.FindValue(12) << endl << endl;
+
+	cout << "V.Sort('u')";
+	V.Sort('u');
+	cout << endl;
+	V.Show();
+	cout << endl;
+
+	cout << "V.Sort('d')";
+	V.Sort('d');
+	cout << endl;
+	V.Show();
+	cout << endl << endl;
+
+	cout << "V.RemoveByIndex(4)";
+	V.RemoveByIndex(4);
+	cout << endl;
+	V.Show();
+	cout << endl << endl;
+
+	cout << "V.RemoveByValue(12)";
+	V.RemoveByValue(12);
+	cout << endl;
+	V.Show();
+	cout << endl << endl;
+
+	cout << "V.Push(11)\n";
+	V.Push(11);
+	V.Show();
+	cout << endl << endl;
+
+	cout << "V.Insert(12, 0)\n";
+	V.Insert(12, 0);
+	V.Show();
+	cout << endl << endl;
+
+	system("pause");
+}
